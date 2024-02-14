@@ -124,11 +124,80 @@ module.exports = {
   },
 
   // POST to add a new friend to a user's friend list
+  async addFriend(req, res) {
 
+    try {
 
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { 
+            friends: req.body.friendId || req.params.friendId 
+          } 
+        },
+        { new: true }
+      )
+
+      if (!user) {
+        return res.status(404).json({
+          message: 'No such user exists'
+        });
+      }
+
+      res.status(200).json(user); 
+      
+    } catch (err) {
+      
+      console.error(err);
+      res.status(500).json(err);
+
+    }
+
+  },
 
   // DELETE to remove a friend from a user's friend list
+  async removeFriend(req, res) {
 
+    try {
 
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { 
+            friends: params.friendId 
+          } 
+        },
+        { new: true }
+      )
 
-}
+      if (!user) {
+        return res.status(404).json({
+          message: 'No such user exists'
+        });
+      }
+
+      const friend = user.friends.includes(params.friendId);
+
+      if (!friend) {
+
+        res.status(200).json({
+          message: 'Friend removed from friendlist',
+          user
+        });
+
+      } else {
+
+        res.json({
+          message: 'Something went wrong'
+        });
+
+      } 
+
+      
+    } catch (err) {
+      
+      console.error(err);
+      res.status(500).json(err);
+
+    }
+
+  },
+};
