@@ -4,7 +4,22 @@ const { User, Thought, Reaction } = require('../models');
 module.exports = {
 
 // GET all thoughts
+async getThoughts(req, res) {
 
+  try {
+
+    const thoughts = await Thought.find();
+
+    res.json(thoughts);
+    
+  } catch (err) {
+    
+    console.log(err);
+    return res.status(500).json(err);
+
+  }
+
+},
 
 
 // GET single thought by _id
