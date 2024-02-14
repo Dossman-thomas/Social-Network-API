@@ -14,7 +14,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+      match: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     },
     // thoughts and friends are arrays of ObjectId values that reference the Thought and User models, respectively
     thoughts: [
