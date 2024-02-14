@@ -21,9 +21,31 @@ async getThoughts(req, res) {
 
 },
 
-
 // GET single thought by _id
+async getSingleThought(req, res) {
 
+  try {
+    
+    const thought = await Thought.findOne({_id: req.params.thoughtId})
+      .select('-__v');
+
+    if (!thought) {
+      return res.status(404).json({
+        message: 'no thought found with that ID'
+      })
+    }
+
+    res.json(thought);
+    
+
+  } catch (err) {
+    
+    console.log(err);
+    return res.status(500).json(err);
+
+  }
+
+},
 
 
 // POST to create a new thought (push the created thought's _id to the associated user's thoughts array field)
