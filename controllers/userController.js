@@ -16,14 +16,36 @@ module.exports = {
       
       console.log(err);
       return res.status(500).json(err);
+
+    }
+
+  },
+
+  // GET single user by _id and populated thought and friend data
+  async getSingleUser(req,res) {
+
+    try {
+      
+      const user = await User.findOne({_id: req.params.userId})
+        .select('-__v');
+
+      if (!user) {
+        return res.status(404).json({
+          message: 'no user found with that ID'
+        })
+      }
+
+      res.json(user);
+      
+
+    } catch (err) {
+      
+      console.log(err);
+      return res.status(500).json(err);
       
     }
 
   }
-
-
-  // GET single user by _id and populated thought and friend data
-
 
 
   // POST a new user
