@@ -67,18 +67,69 @@ async createThought(req, res) {
 
     // Return the created thought
     res.json(thought);
+
   } catch (err) {
+
     console.error(err);
     res.status(500).json(err);
+
   }
 },
 
 // PUT to update a thought by _id
+async updateThought(req, res){
+    
+  try {
+    
+    const thought = await Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId},
+      { $addToSet: req.body },
+      { runValidators: true, new: true }
+    );
 
+    if (!thought) {
+      return res.status(404).json({
+        message: 'No such thought exists!'
+      });
+    }
+
+    res.json(thought);
+
+  } catch (err) {
+    
+    console.log(err);
+    res.status(500).json(err);
+
+  }
+
+},
 
 
 // DELETE to remove thought by _id
+async deleteThought(req, res) {
 
+  try {
+
+    const deletedThought = await Thought.findOneAndRemove({ _id: req.params.thoughtId });
+
+    if (!deletedThought) {
+      return res.status(404).json({
+        message: 'No such thought exists'
+      });
+    }
+
+    res.status(200).json({
+      message: 'thought deleted successfully',
+      deletedUser
+    });
+
+  } catch (err) {
+
+    console.error(err);
+    res.status(500).json(err);
+
+  }
+},
 
 
 // POST to create a reaction stored in a single thought's 'reactions' array field
