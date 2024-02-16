@@ -47,7 +47,7 @@ module.exports = {
       const thought = await Thought.create(req.body);
 
       const updatedUser = await User.findOneAndUpdate(
-        { _id: thought.username },
+        { username: req.body.username },
         { $push: { thoughts: thought._id } },
         { new: true }
       );
@@ -71,7 +71,7 @@ module.exports = {
 
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: req.body },
+        { $set: req.body },
         { runValidators: true, new: true }
       );
 
@@ -92,7 +92,7 @@ module.exports = {
 
     try {
 
-      const deletedThought = await Thought.findOneAndRemove({ _id: req.params.thoughtId });
+      const deletedThought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
 
       deletedThought
         ? res.status(200).json({ message: 'Thought deleted successfully', deletedThought })

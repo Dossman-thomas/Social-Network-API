@@ -63,7 +63,7 @@ module.exports = {
 
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: req.body },
+        { $set: req.body },
         { runValidators: true, new: true }
       );
 
@@ -84,7 +84,7 @@ module.exports = {
 
     try {
 
-      const deletedUser = await User.findOneAndRemove({ _id: req.params.userId });
+      const deletedUser = await User.findOneAndDelete({ _id: req.params.userId });
 
       if (!deletedUser) {
         return res.status(404).json({ message: 'No such user exists' });
@@ -136,7 +136,7 @@ module.exports = {
 
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friends: params.friendId } },
+        { $pull: { friends: req.params.friendId } },
         { new: true }
       );
 
@@ -144,7 +144,7 @@ module.exports = {
         return res.status(404).json({ message: 'No such user exists' });
       }
       
-      const friend = !user.friends.includes(params.friendId);
+      const friend = !user.friends.includes(req.params.friendId);
 
       friend
         ? res.status(200).json({ message: 'Friend removed from friendlist', user })
