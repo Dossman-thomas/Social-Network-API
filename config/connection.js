@@ -1,6 +1,6 @@
 const { connect, connection } = require('mongoose');
 
-const connectionString = 'mongodb://localhost:27017/your_database_name'; // Replace with your actual connection string
+const connectionString = 'mongodb://localhost:27017/socialDB'; // Replace with your actual connection string
 
 // Connect to MongoDB
 connect(connectionString, { 
